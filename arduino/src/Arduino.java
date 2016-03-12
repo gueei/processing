@@ -246,12 +246,4 @@ public class Arduino {
       throw new RuntimeException("Error inside Arduino.servoWrite()");
     }
   }
-  
-  /**
-  * Return the underlying Firmata for inheritance
-  *
-  */
-  public Firmata getFirmata(){
-	  return firmata;
-  }
 }

@@ -23,10 +23,7 @@
  * $Id$
  */
 
- 
 package org.firmata; // hope this is okay!
-
-import java.util.Hashtable; 
  
 /**
  * Internal class used by the Arduino class to parse the Firmata protocol.
@@ -124,8 +121,6 @@ public class Firmata {
   int majorVersion = 0;
   int minorVersion = 0;
   
-  Hashtable<Integer, int[]> rawSysex;
-  
   /**
    * An interface that the Firmata class uses to write output to the Arduino
    * board. The implementation should forward the data over the actual 
@@ -150,7 +145,6 @@ public class Firmata {
    */
   public Firmata(Writer writer) {
     this.out = writer;
-	rawSysex = new Hashtable<Integer, int[]>();
   }
   
   public void init() {
@@ -278,9 +272,9 @@ public class Firmata {
   }
 
   private void processSysexMessage() {
-   // System.out.print("[ ");
-    // for (int i = 0; i < storedInputData.length; i++) System.out.print(storedInputData[i] + " ");
-    // System.out.println("]");
+//    System.out.print("[ ");
+//    for (int i = 0; i < storedInputData.length; i++) System.out.print(storedInputData[i] + " ");
+//    System.out.println("]");
     switch(storedInputData[0]) { //first byte in buffer is command
 //      case CAPABILITY_RESPONSE:
 //        for (int pin = 0; pin < pinModes.length; pin++) {
@@ -318,25 +312,13 @@ public class Firmata {
           }
         }
         break;
-	  default:
-		rawSysex.put(storedInputData[0], storedInputData);
-	  break;
     }
   }
 
-  public void sysexWrite(int command, int[] message){
-	  out.write(START_SYSEX);
-	  out.write(command);
-	  for(int i=0; i<message.length; i++){
-		  out.write(message[i]);
-	  }
-	  out.write(END_SYSEX);
-  }
-  
   public void processInput(int inputData) {
     int command;
     
-    //System.out.print(">" + inputData + " ");
+//    System.out.print(">" + inputData + " ");
     
     if (parsingSysex) {
       if (inputData == END_SYSEX) {
