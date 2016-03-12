@@ -11,8 +11,8 @@
 	<property name="resources_macosx" location="resources_macosx"/> <!-- location of Mac OS X specific resources -->
 	<property name="compile.debug" value="true"/>
 
-	<fileset id="lib.jars" dir="/Applications/Processing.app/Contents/Java/"
-	         includes="core/library/core.jar modes/java/libraries/serial/library/serial.jar" />
+	<fileset id="lib.jars" dir="c:/processing3/"
+	         includes="c:/processing3/core/library/core.jar c:/processing3/modes/java/libraries/serial/library/serial.jar" />
 
 	<path id="lib.path">
 		<fileset refid="lib.jars"/>
@@ -52,7 +52,7 @@
 		</jar>
 	</target>
 	
-	<target name="install" depends="jar,doc" description="Put all the pieces together in the dist directory">
+	<target name="install" depends="jar" description="Put all the pieces together in the dist directory">
 		<mkdir dir="${dist}"/>
 		<mkdir dir="${dist}/library"/>
 		<mkdir dir="${dist}/examples"/>
