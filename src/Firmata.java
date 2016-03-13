@@ -124,7 +124,7 @@ public class Firmata {
   int majorVersion = 0;
   int minorVersion = 0;
   
-  Hashtable<Integer, int[]> rawSysex;
+  Hashtable<Integer, SysexDataListener> sysexListeners;
   
   /**
    * An interface that the Firmata class uses to write output to the Arduino
@@ -141,6 +141,13 @@ public class Firmata {
     public void write(int val);
   }
   
+  public interface SysexDataListener{
+	  /**
+	   * Allows asynchronous Sysex data response
+	   */
+	 public void onData(int[] data, int length);
+  }
+  
   Writer out;
   
   /**
@@ -150,7 +157,7 @@ public class Firmata {
    */
   public Firmata(Writer writer) {
     this.out = writer;
-	rawSysex = new Hashtable<Integer, int[]>();
+	sysexListeners = new Hashtable<Integer, SysexDataListener>();
   }
   
   public void init() {
@@ -319,7 +326,8 @@ public class Firmata {
         }
         break;
 	  default:
-		rawSysex.put(storedInputData[0], storedInputData);
+		SysexDataListener l = sysexListeners.get(storedInputData[0]);
+		if(l!=null) l.onData(storedInputData, sysexBytesRead);
 	  break;
     }
   }
@@ -331,6 +339,10 @@ public class Firmata {
 		  out.write(message[i]);
 	  }
 	  out.write(END_SYSEX);
+  }
+  
+  public void registerSysexListener(int command, SysexDataListener l){
+	  sysexListeners.put(command, l);
   }
   
   public void processInput(int inputData) {
