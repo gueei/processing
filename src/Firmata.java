@@ -253,7 +253,7 @@ public class Firmata {
   public void servoWrite(int pin, int value) {
     out.write(ANALOG_MESSAGE | (pin & 0x0F));
     out.write(value & 0x7F);
-    out.write(value >> 7);
+    out.write( (value >> 7) & 0x7F);
   }
   
   private void setDigitalInputs(int portNumber, int portData) {
